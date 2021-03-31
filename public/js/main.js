@@ -1,5 +1,7 @@
 const deleteText = document.querySelectorAll('.fa-trash')
 const thumbText = document.querySelectorAll('.fa-thumbs-up')
+const thumbTextDown = document.querySelectorAll('.fa-thumbs-down')
+
 
 Array.from(deleteText).forEach((element)=>{
     element.addEventListener('click', deleteRapper)
@@ -7,6 +9,10 @@ Array.from(deleteText).forEach((element)=>{
 
 Array.from(thumbText).forEach((element)=>{
     element.addEventListener('click', addLike)
+})
+
+Array.from(thumbTextDown).forEach((element)=>{
+    element.addEventListener('click', addDislike)
 })
 
 async function deleteRapper(){
@@ -34,6 +40,7 @@ async function addLike(){
     const sName = this.parentNode.childNodes[1].innerText
     const bName = this.parentNode.childNodes[3].innerText
     const tLikes = Number(this.parentNode.childNodes[5].innerText)
+    const dLikes = Number(this.parentNode.childNodes[9].innerText)
     try{
         const response = await fetch('addOneLike', {
             method: 'put',
@@ -41,7 +48,8 @@ async function addLike(){
             body: JSON.stringify({
               'stageNameS': sName,
               'birthNameS': bName,
-              'likesS': tLikes
+              'likesS': tLikes,
+              'dislikesS': dLikes
             })
           })
         const data = await response.json()
@@ -51,4 +59,29 @@ async function addLike(){
     }catch(err){
         console.log(err)
     }
+}
+    async function addDislike(){
+        const sName = this.parentNode.childNodes[1].innerText
+        const bName = this.parentNode.childNodes[3].innerText
+        const tLikes = Number(this.parentNode.childNodes[5].innerText)
+        const dLikes = Number(this.parentNode.childNodes[9].innerText)
+        try{
+            const response = await fetch('addOneDislike', {
+                method: 'put',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                  'stageNameS': sName,
+                  'birthNameS': bName,
+                  'likesS': tLikes,
+                  'dislikesS': dLikes
+                })
+              })
+            const data = await response.json()
+            console.log(data)
+            location.reload()
+
+        }catch(err){
+            console.log(err)
+        }
+
 }

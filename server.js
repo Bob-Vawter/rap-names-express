@@ -14,7 +14,7 @@ MongoClient.connect(dbConnectionStr, { useUnifiedTopology: true })
         console.log(`Connected to ${dbName} Database`)
         db = client.db(dbName)
     })
-    
+
 app.set('view engine', 'ejs')
 app.use(express.static('public'))
 app.use(express.urlencoded({ extended: true }))
@@ -31,7 +31,7 @@ app.get('/',(request, response)=>{
 
 app.post('/addRapper', (request, response) => {
     db.collection('rappers').insertOne({stageName: request.body.stageName,
-    birthName: request.body.birthName, likes: 0})
+    birthName: request.body.birthName, likes: 0, dislikes: 0})
     .then(result => {
         console.log('Rapper Added')
         response.redirect('/')
@@ -40,7 +40,7 @@ app.post('/addRapper', (request, response) => {
 })
 
 app.put('/addOneLike', (request, response) => {
-    db.collection('rappers').updateOne({stageName: request.body.stageNameS, birthName: request.body.birthNameS,likes: request.body.likesS},{
+    db.collection('rappers').updateOne({stageName: request.body.stageNameS, birthName: request.body.birthNameS,likes: request.body.likesS,dislikes: request.body.dislikesS},{
         $set: {
             likes:request.body.likesS + 1
           }
@@ -53,7 +53,22 @@ app.put('/addOneLike', (request, response) => {
         response.json('Like Added')
     })
     .catch(error => console.error(error))
+})
 
+app.put('/addOneDislike', (request, response) => {
+    db.collection('rappers').updateOne({stageName: request.body.stageNameS, birthName: request.body.birthNameS,likes: request.body.likesS,dislikes: request.body.dislikesS},{
+        $set: {
+            dislikes:request.body.dislikesS + 1
+          }
+    },{
+        sort: {_id: -1},
+        upsert: true
+    })
+    .then(result => {
+        console.log('Added One Dislike')
+        response.json('Dislike Added')
+    })
+    .catch(error => console.error(error))
 })
 
 app.delete('/deleteRapper', (request, response) => {

@@ -24,9 +24,11 @@
         <li class="rapper">
             <span><%= info[i].stageName %></span>
             <span><%= info[i].birthName %></span>
-            <span><%= info[i].likes %></span>
+            <span class='liked'><%= info[i].likes %></span>
             <span class='fa fa-thumbs-up'></span>
-            <span class='fa fa-trash'></span>
+            <span class='dissed'><%= info[i].dislikes %></span>
+            <span class='fa fa-thumbs-down'></span>
+            <span id='trash' class='fa fa-trash'></span>
         </li>
     <% } %>
     </ul>
@@ -38,7 +40,7 @@
         <input type="text" placeholder="Birth Name" name="birthName">
         <input type="submit">
     </form>
-    
+
 
     <script src='js/main.js'></script>
 </body>
